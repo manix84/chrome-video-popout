@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+        chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+            if (request.type == "popUp") {
+                openPopUp(request.content);
+            }
+        });
+
+        openPopUp = function (contents) {
+            chrome.windows.create({
+                url: "empty_page.html",
+                type: "popup"
+            }, function (win) {
+                chrome.tabs.getSelected(win.id, function (tab) {
+                    chrome.tabs.sendRequest(tab.id, {
+                        type: "popUpContent",
+                        content: contents
+                    });
+                });
+            });
+        }
+    </script>
+</head>
+</html>

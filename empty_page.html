@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+    </head>
+<body>
+    <div id="objectDiv"></div>
+
+    <script>
+        var objectDiv = document.getElementById('objectDiv');
+
+        chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+            if (request.type == "popUpContent") {
+                objectDiv.innerHTML = request.content;
+
+                var object = document.getElementsByTagName('object')[0],
+                    embed = document.getElementsByTagName('embed')[0]
+
+                console.log("object: " + object);
+
+                if (object) {
+                    setStyle(object);
+                } else {
+                    setStyle(embed);
+                }
+            }
+
+            setStyle = function (element) {
+                element.style.display = "block";
+                element.style.width = "100%";
+                element.style.height = "100%";
+                element.style.top = "0px";
+                element.style.left = "0px";
+                element.style.position = "absolute";
+            }
+        });
+    </script>
+</body>
+</html>
